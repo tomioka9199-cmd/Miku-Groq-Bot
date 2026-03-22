@@ -92,4 +92,16 @@ client.on("messageCreate", async (message) => {
   }
 });
 
-client.login(process.env.DISCORD_TOKEN);
+client.login(process.env.DISCORD_TOKEN).catch((err) => {
+  if (err.message?.includes("disallowed intents")) {
+    console.error(
+      "\n❌ ERROR: Intents no permitidos.\n" +
+      "Activa el 'Message Content Intent' en el Portal de Discord:\n" +
+      "→ https://discord.com/developers/applications\n" +
+      "→ Tu app → Bot → Privileged Gateway Intents → MESSAGE CONTENT INTENT ✅\n"
+    );
+  } else {
+    console.error("Error al iniciar sesión en Discord:", err.message);
+  }
+  process.exit(1);
+});
